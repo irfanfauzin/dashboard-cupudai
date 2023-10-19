@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+input:checked ~ .dot {
+    transform: translateX(100%);
+    
+    }
+
+input:checked ~ .label {
+        background-color: #6A64F1;
+        border-color: #6A64F1;
+    
+    }
