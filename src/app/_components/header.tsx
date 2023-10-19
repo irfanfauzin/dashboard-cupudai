@@ -6,7 +6,7 @@ import Link from 'next/link'
 
 import { useState } from 'react';
 
-function header({title = ''}) {
+function Header({title = ''}) {
     const [showDiv, setShowDiv] = useState(false);
     const toggleDiv = () => {
         setShowDiv(!showDiv);
@@ -112,4 +112,4 @@ function header({title = ''}) {
     )
 }
 
-export default header
+export default Header

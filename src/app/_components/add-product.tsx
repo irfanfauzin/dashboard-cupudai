@@ -1,7 +1,13 @@
-// @ts-nocheck
 
 "use client";
 import { api } from "~/trpc/react";
+
+
+type CategoryRes = {
+  
+    id?: string;
+    name?: string;
+  };
 
 export default function AddProduct() {
   const {
@@ -11,8 +17,7 @@ export default function AddProduct() {
 
   return (
     <div className="flex items-center justify-center p-12">
-      {/* Author: FormBold Team */}
-      {/* Learn More: https://formbold.com */}
+  
       <div className="mx-auto w-full max-w-[550px] rounded-lg border-2 border-zinc-700 bg-black text-white">
         <form
           className="px-9 py-6"
@@ -65,13 +70,13 @@ export default function AddProduct() {
               >
                 {!isFetched && <option value="">Please wait</option>}
 
-                {isFetched && categories.length === 0 && (
+                {isFetched && categories?.length === 0 && (
                   <option value="">No Categories</option>
                 )}
 
                 {isFetched &&
-                  categories.length !== 0 &&
-                  categories.map((category: any) => (
+                  categories?.length !== 0 &&
+                  categories?.map((category: CategoryRes) => (
                     <option key={category.id} value={category.name}>{category.name}</option>
                   ))}
               </select>

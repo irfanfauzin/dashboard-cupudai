@@ -1,11 +1,12 @@
 
-import Signup from "~/app/_components/signup"
+import ForgotPassword from "~/app/_components/forgot-password"
 
-export default async function Home() {
+export default  function Home() {
 
   return (
     <>
-      <Signup />
+      <ForgotPassword />
+ 
     </>
 
   );

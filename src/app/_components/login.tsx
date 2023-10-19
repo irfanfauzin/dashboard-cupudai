@@ -213,7 +213,7 @@ export default function Login() {
             </div>
 
             <div className="mt-2 flex w-full flex-row justify-center">
-              Don't have an account? &nbsp;
+              Don&apos;t have an account? &nbsp;
               <a href="#" className="underline text-[#7F04E3]">
                 Sign Up
               </a>

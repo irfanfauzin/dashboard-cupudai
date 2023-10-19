@@ -1,7 +1,7 @@
 
 import Login from "~/app/_components/login"
 
-export default async function Home() {
+export default  function Home() {
 
   return (
     <>
