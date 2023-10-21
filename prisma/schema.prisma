@@ -11,6 +11,38 @@ datasource db {
     relationMode = "prisma"
 }
 
+model User {
+  id    Int    @id @default(autoincrement())
+  username      String    @unique
+  createdAt DateTime  @default(now())
+  items  Cart[]
+}
+
+model Cart {
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  id        String   @id @default(cuid())
+  user      User    @relation(fields: [userID], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  userID   Int   @unique
+  bags      Bag[]
+}
+
+model Bag {
+  id         Int     @id @default(autoincrement())
+  itemCount  Int
+  item       Product @relation(fields: [productId], references: [id])
+  Cart       Cart    @relation(fields: [cartId], references: [id])
+  
+  selected   Boolean @default(false)
+  checkedOut Boolean @default(false)
+  cartId     String
+  productId  Int
+
+
+  @@index([productId])
+  @@index([cartId])
+}
+
 model Category {
   id        String    @id @default(cuid())
   name      String    @unique
@@ -23,14 +55,14 @@ model Product {
     image        String
     name         String
     author       String
-    price        Float
+    price        String
     enable       Boolean
     description  String
     sold         Int
     createdAt    DateTime @default(now())
     updatedAt    DateTime @updatedAt
-    category    Category? @relation(fields: [categoryId], references: [name])
-    categoryId  String?
+    category    Category[]
+    cart        Bag[]
 
     @@index([id])
 }

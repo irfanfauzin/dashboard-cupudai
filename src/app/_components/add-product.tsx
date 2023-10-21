@@ -1,27 +1,45 @@
-
 "use client";
 import { api } from "~/trpc/react";
-
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 type CategoryRes = {
-  
-    id?: string;
-    name?: string;
-  };
+  id?: string;
+  name?: string;
+};
 
 export default function AddProduct() {
-  const {
-    data: categories,
-    isFetched,
-  } = api.category.getLatest.useQuery();
+  const router = useRouter();
+
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("");
+  const [enable, setEnable] = useState(false);
+
+  const createProduct = api.product.create.useMutation({
+    onSuccess: () => {
+      router.refresh();
+    },
+  });
+
+  const { data: categories, isFetched } = api.category.getLatest.useQuery();
 
   return (
     <div className="flex items-center justify-center p-12">
-  
       <div className="mx-auto w-full max-w-[550px] rounded-lg border-2 border-zinc-700 bg-black text-white">
         <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            createProduct.mutate({
+              name,
+              price,
+              description,
+              category,
+              enable,
+            });
+          }}
           className="px-9 py-6"
-          action="https://formbold.com/s/FORM_ID"
           method="POST"
         >
           <div className="mb-5">
@@ -33,8 +51,9 @@ export default function AddProduct() {
             </label>
             <input
               type="text"
-              name="Name"
-              id="Name"
+              name="name"
+              id="name"
+              onChange={(e) => setName(e.target.value)}
               placeholder="AI Content "
               className="w-full rounded-md border border-[#e0e0e0] bg-white px-6 py-3 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
             />
@@ -50,7 +69,9 @@ export default function AddProduct() {
               </label>
               <input
                 className="w-full rounded-md border border-[#e0e0e0] bg-white px-6 py-3 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                id="Price"
+                id="price"
+                name="price"
+                onChange={(e) => setPrice(e.target.value)}
                 type="text"
                 placeholder="$1"
               />
@@ -64,7 +85,9 @@ export default function AddProduct() {
               </label>
 
               <select
-                id="Category"
+                id="category"
+                name="category"
+                onChange={(e) => setCategory(e.target.value)}
                 className="bg-grey-lighter border-grey-lighter block w-full appearance-none rounded border px-4 py-3 text-black"
                 placeholder="Select category"
               >
@@ -77,7 +100,9 @@ export default function AddProduct() {
                 {isFetched &&
                   categories?.length !== 0 &&
                   categories?.map((category: CategoryRes) => (
-                    <option key={category.id} value={category.name}>{category.name}</option>
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
                   ))}
               </select>
             </div>
@@ -91,8 +116,9 @@ export default function AddProduct() {
               Description
             </label>
             <textarea
-              name="Description"
-              id="Description"
+              name="description"
+              id="description"
+              onChange={(e) => setDescription(e.target.value)}
               placeholder="Write your description of your product "
               className="w-full rounded-md border border-[#e0e0e0] bg-white px-6 py-3 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
             />
@@ -100,15 +126,16 @@ export default function AddProduct() {
 
           <div className="toggle mb-6 flex flex-row justify-between ">
             <label
-              htmlFor="dark-toggle"
+              htmlFor="enable"
               className="flex cursor-pointer items-center"
             >
               <div className="relative">
                 <input
                   type="checkbox"
-                  name="dark-mode"
-                  id="dark-toggle"
-                  className="checkbox hidden "
+                  name="enable"
+                  id="enable"
+                  className="checkbox hidden"
+                  onClick={() => setEnable(!enable)}
                 />
                 <div className="label block h-8 w-14 rounded-full border-[1px] border-gray-900 dark:border-zinc-700 " />
                 <div className="dot absolute left-1 top-1 h-6 w-6 rounded-full bg-white transition dark:bg-white" />

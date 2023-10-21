@@ -1,5 +1,4 @@
 import React from 'react'
-import Link from 'next/link'
 import Button from '~/app/_components/sidebar-buttons'
 import '~/styles/globals.css'
 
